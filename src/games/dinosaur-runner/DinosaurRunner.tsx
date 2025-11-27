@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -36,16 +36,34 @@ const DinosaurRunner: React.FC<DinosaurRunnerProps> = ({ navigation }) => {
     initializeGame();
   }, [initializeGame]);
 
-  const handleScreenPress = () => {
+  const handleScreenPress = useCallback(() => {
     if (gameState.isGameOver) {
       resetGame();
     } else if (!gameState.isPaused) {
       handleJump();
     }
-  };
+  }, [gameState.isGameOver, gameState.isPaused, resetGame, handleJump]);
+
+  // Add keyboard support for spacebar jump
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === 'Space' || event.key === ' ') {
+        event.preventDefault(); // Prevent page scroll
+        handleScreenPress();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleScreenPress]);
 
   const handleGoHome = () => {
-    navigation.navigate('GameMenu');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'GameMenu' }],
+    });
   };
 
   return (

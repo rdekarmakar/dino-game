@@ -5,7 +5,7 @@ export type DinosaurType = 'carnivore' | 'herbivore' | 'flying' | 'marine';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
 // Dinosaur data structure
-export interface Dinosaur {
+export interface DinosaurData {
   id: string;
   name: string;
   scientificName?: string;

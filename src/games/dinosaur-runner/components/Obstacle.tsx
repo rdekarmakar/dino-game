@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 5, // Below dinosaur but above background
   },
 
   obstacleEmoji: {

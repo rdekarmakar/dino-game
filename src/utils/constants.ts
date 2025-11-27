@@ -44,14 +44,14 @@ export const QUIZ_GAME = {
 
 // Runner Game Constants
 export const RUNNER_GAME = {
-  GRAVITY: 0.6,
-  JUMP_FORCE: -12,
+  GRAVITY: 0.8,
+  JUMP_FORCE: 15, // Positive value to jump UP (using bottom positioning)
   INITIAL_SPEED: 5,
   SPEED_INCREMENT: 0.001,
-  MAX_SPEED: 15,
-  GROUND_HEIGHT: 100,
+  MAX_SPEED: 12,
+  GROUND_HEIGHT: 80,
   DINO_SIZE: { width: 60, height: 60 },
-  OBSTACLE_GAP: { min: 800, max: 1200 },
+  OBSTACLE_GAP: { min: 800, max: 1400 }, // Increased gaps for better gameplay
   POWER_UP_CHANCE: 0.05, // 5% chance
   POWER_UP_DURATION: 5000, // milliseconds
 };

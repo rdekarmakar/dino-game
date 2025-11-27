@@ -1,7 +1,7 @@
-import { Dinosaur } from '../../../types';
+import { DinosaurData } from '../../../types';
 
 // Dinosaur data for the memory matching game
-export const dinosaurs: Dinosaur[] = [
+export const dinosaurs: DinosaurData[] = [
   {
     id: 'trex',
     name: 'T-Rex',
@@ -161,16 +161,16 @@ export const dinosaurs: Dinosaur[] = [
 ];
 
 // Helper functions to filter dinosaurs by type
-export const getDinosaursByType = (type: Dinosaur['type']): Dinosaur[] => {
+export const getDinosaursByType = (type: DinosaurData['type']): DinosaurData[] => {
   return dinosaurs.filter((dino) => dino.type === type);
 };
 
-export const getRandomDinosaurs = (count: number): Dinosaur[] => {
+export const getRandomDinosaurs = (count: number): DinosaurData[] => {
   const shuffled = [...dinosaurs].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, dinosaurs.length));
 };
 
-export const getDinosaurById = (id: string): Dinosaur | undefined => {
+export const getDinosaurById = (id: string): DinosaurData | undefined => {
   return dinosaurs.find((dino) => dino.id === id);
 };
 

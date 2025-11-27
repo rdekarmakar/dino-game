@@ -19,6 +19,10 @@ export const useQuiz = (category?: QuizCategory, questionCount: number = QUIZ_GA
   // Initialize quiz
   const initializeQuiz = useCallback(() => {
     const questions = getRandomQuestions(questionCount);
+    console.log('Initializing quiz with questions:', questions.length);
+    if (questions.length === 0) {
+      console.error('No questions available!');
+    }
     setQuizState({
       questions,
       currentQuestionIndex: 0,
@@ -34,13 +38,32 @@ export const useQuiz = (category?: QuizCategory, questionCount: number = QUIZ_GA
 
   // Select answer
   const selectAnswer = useCallback((answerIndex: number) => {
+    console.log('selectAnswer called with index:', answerIndex);
     setQuizState((prev) => {
-      if (prev.selectedAnswer !== null) return prev; // Already answered
+      console.log('Current quiz state:', {
+        questionsLength: prev.questions.length,
+        currentIndex: prev.currentQuestionIndex,
+        selectedAnswer: prev.selectedAnswer,
+      });
+
+      if (prev.selectedAnswer !== null) {
+        console.log('Already answered, returning previous state');
+        return prev; // Already answered
+      }
 
       const currentQuestion = prev.questions[prev.currentQuestionIndex];
-      const isCorrect = answerIndex === currentQuestion.correctAnswer;
+      if (!currentQuestion) {
+        console.error('No current question found', {
+          questionsLength: prev.questions.length,
+          currentIndex: prev.currentQuestionIndex,
+        });
+        return prev;
+      }
 
-      return {
+      const isCorrect = answerIndex === currentQuestion.correctAnswer;
+      console.log('Answer is correct:', isCorrect);
+
+      const newState = {
         ...prev,
         selectedAnswer: answerIndex,
         showExplanation: true,
@@ -48,6 +71,15 @@ export const useQuiz = (category?: QuizCategory, questionCount: number = QUIZ_GA
         correctAnswers: isCorrect ? prev.correctAnswers + 1 : prev.correctAnswers,
         wrongAnswers: !isCorrect ? prev.wrongAnswers + 1 : prev.wrongAnswers,
       };
+
+      console.log('New quiz state after answer:', {
+        selectedAnswer: newState.selectedAnswer,
+        showExplanation: newState.showExplanation,
+        currentIndex: newState.currentQuestionIndex,
+        questionsLength: newState.questions.length,
+      });
+
+      return newState;
     });
   }, []);
 

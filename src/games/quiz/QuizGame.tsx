@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   SafeAreaView,
   ScrollView,
@@ -37,8 +38,16 @@ const QuizGame: React.FC<QuizGameProps> = ({ navigation, route }) => {
   } = useQuiz(category);
 
   useEffect(() => {
+    console.log('QuizGame: initializeQuiz effect running');
     initializeQuiz();
   }, [initializeQuiz]);
+
+  console.log('QuizGame render:', {
+    isComplete: quizState.isComplete,
+    currentIndex: quizState.currentQuestionIndex,
+    questionsLength: quizState.questions.length,
+    hasCurrentQuestion: !!currentQuestion,
+  });
 
   if (quizState.isComplete) {
     const result: QuizResult = {
@@ -57,19 +66,53 @@ const QuizGame: React.FC<QuizGameProps> = ({ navigation, route }) => {
         <ResultScreen
           result={result}
           onPlayAgain={resetQuiz}
-          onGoHome={() => navigation.navigate('GameMenu')}
+          onGoHome={() => navigation.reset({
+            index: 0,
+            routes: [{ name: 'GameMenu' }],
+          })}
         />
       </SafeAreaView>
     );
   }
 
   if (!currentQuestion) {
-    return null;
+    console.error('No current question available', {
+      currentIndex: quizState.currentQuestionIndex,
+      totalQuestions: quizState.questions.length,
+      questions: quizState.questions,
+    });
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.primary.green} />
+        <Header title="Dino Quiz" onBack={() => navigation.goBack()} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xl }}>
+          <Text style={{ fontSize: typography.fontSize['2xl'], color: colors.text.primary, textAlign: 'center' }}>
+            Loading quiz questions...
+          </Text>
+          <Button
+            title="Go Back"
+            onPress={() => navigation.goBack()}
+            variant="primary"
+            size="medium"
+            style={{ marginTop: spacing.lg }}
+          />
+        </View>
+      </SafeAreaView>
+    );
   }
 
   const isAnswered = quizState.selectedAnswer !== null;
   const isCorrect =
     isAnswered && quizState.selectedAnswer === currentQuestion.correctAnswer;
+
+  // Debug logging
+  console.log('Quiz State:', {
+    isAnswered,
+    selectedAnswer: quizState.selectedAnswer,
+    showExplanation: quizState.showExplanation,
+    currentIndex: quizState.currentQuestionIndex,
+    totalQuestions,
+  });
 
   return (
     <SafeAreaView style={styles.container}>

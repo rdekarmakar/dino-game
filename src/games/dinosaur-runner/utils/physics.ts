@@ -1,18 +1,23 @@
 import { Dinosaur, Obstacle, PowerUp } from '../../../types';
 import { RUNNER_GAME } from '../../../utils/constants';
 import { checkCollision } from '../../../utils/helpers';
+import { Dimensions } from 'react-native';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 /**
  * Apply gravity to dinosaur
+ * Note: Using 'bottom' positioning, so Y increases = moves UP, Y decreases = moves DOWN
  */
 export const applyGravity = (dino: Dinosaur): Dinosaur => {
-  const newVelocityY = dino.velocityY + RUNNER_GAME.GRAVITY;
+  const newVelocityY = dino.velocityY - RUNNER_GAME.GRAVITY; // Subtract gravity (pulls down)
   let newY = dino.y + newVelocityY;
   let isJumping = true;
 
-  // Check if dinosaur has landed
-  if (newY >= RUNNER_GAME.GROUND_HEIGHT) {
-    newY = RUNNER_GAME.GROUND_HEIGHT;
+  // Check if dinosaur has landed on ground
+  const groundLevel = RUNNER_GAME.GROUND_HEIGHT + 50; // Ground visual height + ground line position
+  if (newY <= groundLevel) {
+    newY = groundLevel;
     isJumping = false;
   }
 
@@ -78,9 +83,11 @@ export const generateObstacle = (lastObstacleX: number, speed: number): Obstacle
   const types: Obstacle['type'][] = ['cactus', 'rock', 'pterodactyl'];
   const type = types[Math.floor(Math.random() * types.length)];
 
+  const groundLevel = RUNNER_GAME.GROUND_HEIGHT + 50;
+
   const obstacle: Obstacle = {
-    x: 400, // Screen width
-    y: type === 'pterodactyl' ? RUNNER_GAME.GROUND_HEIGHT - 80 : RUNNER_GAME.GROUND_HEIGHT - 50,
+    x: SCREEN_WIDTH, // Use dynamic screen width
+    y: type === 'pterodactyl' ? groundLevel + 80 : groundLevel,
     width: type === 'pterodactyl' ? 60 : 40,
     height: type === 'pterodactyl' ? 40 : 50,
     type,
@@ -98,15 +105,38 @@ export const checkObstacleCollision = (
   obstacles: Obstacle[]
 ): boolean => {
   return obstacles.some((obstacle) => {
-    // Add some padding for better gameplay
+    // Only check obstacles that are close to the dinosaur's position
+    // Skip if obstacle is too far ahead (not spawned yet) or already passed
+    const isInRange =
+      obstacle.x < dino.x + dino.width + 20 && // Obstacle is not too far right
+      obstacle.x + obstacle.width > dino.x + 10; // Obstacle hasn't completely passed
+
+    if (!isInRange) {
+      return false;
+    }
+
+    // VERY generous hitboxes - reduce by 60% for fair gameplay
+    // This accounts for the visual shape of emojis vs their bounding box
+    const hitboxPadding = 25;
     const dinoBounds = {
-      x: dino.x + 5,
-      y: dino.y + 5,
-      width: dino.width - 10,
-      height: dino.height - 10,
+      x: dino.x + hitboxPadding,
+      y: dino.y + hitboxPadding,
+      width: Math.max(10, dino.width - hitboxPadding * 2),
+      height: Math.max(10, dino.height - hitboxPadding * 2),
     };
 
-    return checkCollision(dinoBounds, obstacle);
+    const obstaclePadding = 20;
+    const obstacleBounds = {
+      x: obstacle.x + obstaclePadding,
+      y: obstacle.y + obstaclePadding,
+      width: Math.max(10, obstacle.width - obstaclePadding * 2),
+      height: Math.max(10, obstacle.height - obstaclePadding * 2),
+    };
+
+    // Check if the reduced hitboxes actually overlap
+    const hasCollision = checkCollision(dinoBounds, obstacleBounds);
+
+    return hasCollision;
   });
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Animated, View } from 'react-native';
-import { Card as CardType, Dinosaur } from '../../../types';
+import { TouchableOpacity, Text, StyleSheet, Animated, View, Image } from 'react-native';
+import { Card as CardType } from '../../../types';
 import { colors, spacing, borderRadius, shadow } from '../../../theme';
 import { getDinosaurById } from '../data/dinosaurs';
 
@@ -77,34 +77,45 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ card, onPress, size, dis
           },
         ]}
       >
-        <Text style={styles.dinoEmoji}>{getDinoEmoji(card.dinosaurId)}</Text>
-        {card.isMatched && dinosaur && (
-          <Text style={styles.dinoName} numberOfLines={1}>
-            {dinosaur.name}
-          </Text>
+        <View style={styles.dinoImageContainer}>
+          <Image
+            source={getDinoImage(card.dinosaurId)}
+            style={styles.dinoImage}
+            resizeMode="contain"
+          />
+        </View>
+        {dinosaur && (
+          <View style={styles.dinoInfoContainer}>
+            <Text style={styles.dinoName} numberOfLines={2}>
+              {dinosaur.name}
+            </Text>
+            <Text style={styles.dinoType} numberOfLines={1}>
+              {dinosaur.type}
+            </Text>
+          </View>
         )}
       </Animated.View>
     </TouchableOpacity>
   );
 };
 
-// Helper function to get emoji for dinosaur (simplified for now)
-const getDinoEmoji = (dinoId: string): string => {
-  const emojiMap: Record<string, string> = {
-    trex: '🦖',
-    triceratops: '🦕',
-    stegosaurus: '🦕',
-    brachiosaurus: '🦕',
-    pterodactyl: '🦅',
-    velociraptor: '🦖',
-    ankylosaurus: '🦕',
-    parasaurolophus: '🦕',
-    diplodocus: '🦕',
-    spinosaurus: '🦖',
-    allosaurus: '🦖',
-    iguanodon: '🦕',
+// Helper function to get image source for dinosaur
+const getDinoImage = (dinoId: string) => {
+  const imageMap: Record<string, any> = {
+    trex: require('../../../../assets/images/dinosaurs/trex.png'),
+    triceratops: require('../../../../assets/images/dinosaurs/triceratops.png'),
+    stegosaurus: require('../../../../assets/images/dinosaurs/stegosaurus.png'),
+    brachiosaurus: require('../../../../assets/images/dinosaurs/brachiosaurus.png'),
+    pterodactyl: require('../../../../assets/images/dinosaurs/pterodactyl.png'),
+    velociraptor: require('../../../../assets/images/dinosaurs/velociraptor.png'),
+    ankylosaurus: require('../../../../assets/images/dinosaurs/ankylosaurus.png'),
+    parasaurolophus: require('../../../../assets/images/dinosaurs/parasaurolophus.png'),
+    diplodocus: require('../../../../assets/images/dinosaurs/diplodocus.png'),
+    spinosaurus: require('../../../../assets/images/dinosaurs/spinosaurus.png'),
+    allosaurus: require('../../../../assets/images/dinosaurs/allosaurus.png'),
+    iguanodon: require('../../../../assets/images/dinosaurs/iguanodon.png'),
   };
-  return emojiMap[dinoId] || '🦕';
+  return imageMap[dinoId] || require('../../../../assets/images/dinosaurs/dinosaur.png');
 };
 
 const styles = StyleSheet.create({
@@ -150,15 +161,46 @@ const styles = StyleSheet.create({
     borderColor: colors.primary.darkGreen,
   },
 
-  dinoEmoji: {
-    fontSize: 48,
+  dinoImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    padding: spacing.sm,
+  },
+
+  dinoImage: {
+    width: '100%',
+    height: '100%',
+    maxWidth: 100,
+    maxHeight: 100,
+  },
+
+  dinoInfoContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    width: '100%',
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 36,
   },
 
   dinoName: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '700',
     color: colors.text.inverse,
-    marginTop: spacing.xs,
     textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+
+  dinoType: {
+    fontSize: 8,
+    fontWeight: '600',
+    color: colors.secondary.lightGreen,
+    textAlign: 'center',
+    marginTop: 2,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
 });

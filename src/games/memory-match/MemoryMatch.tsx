@@ -32,14 +32,18 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ navigation, route }) => {
   }, [initializeGame]);
 
   const totalPairs = gameState.cards.length / 2;
-  const isGameInProgress = gameState.flippedCards.length > 0;
+  // Disable card flips only when 2 cards are already flipped (processing match)
+  const cardsDisabled = gameState.flippedCards.length >= 2;
 
   const handlePlayAgain = () => {
     resetGame();
   };
 
   const handleGoHome = () => {
-    navigation.navigate('GameMenu');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'GameMenu' }],
+    });
   };
 
   const stars = gameState.isGameComplete
@@ -79,7 +83,7 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ navigation, route }) => {
         cards={gameState.cards}
         onCardPress={flipCard}
         difficulty={difficulty}
-        disabled={isGameInProgress}
+        disabled={cardsDisabled}
       />
 
       {/* Victory Modal */}

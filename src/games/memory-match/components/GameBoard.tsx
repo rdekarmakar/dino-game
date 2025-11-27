@@ -12,7 +12,7 @@ interface GameBoardProps {
   disabled?: boolean;
 }
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const GameBoard: React.FC<GameBoardProps> = ({
   cards,
@@ -24,14 +24,19 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   const { rows, cols } = gridSize;
 
   // Calculate card size based on screen width and grid
-  const cardMargin = spacing.xs * 2;
-  const boardPadding = spacing.base * 2;
+  const cardMargin = spacing.xs;
+  const boardPadding = spacing.md * 2;
   const availableWidth = width - boardPadding;
-  const cardSize = (availableWidth - cardMargin * cols) / cols;
+  const availableHeight = height - 250; // Reserve space for header and score panel
+
+  // Calculate optimal card size based on both width and height constraints
+  const cardWidthSize = (availableWidth - cardMargin * 2 * cols) / cols;
+  const cardHeightSize = (availableHeight - cardMargin * 2 * rows) / rows;
+  const cardSize = Math.min(cardWidthSize, cardHeightSize, 120); // Increased max size to 120
 
   return (
     <View style={styles.container}>
-      <View style={[styles.grid, { maxWidth: availableWidth }]}>
+      <View style={[styles.grid, { width: availableWidth, padding: spacing.md }]}>
         {cards.map((card) => (
           <MemoryCard
             key={card.id}

@@ -16,7 +16,7 @@ export const useGameLoop = () => {
   const [gameState, setGameState] = useState<RunnerGameState>({
     dinosaur: {
       x: 50,
-      y: RUNNER_GAME.GROUND_HEIGHT,
+      y: RUNNER_GAME.GROUND_HEIGHT + 50, // Position on top of ground
       width: RUNNER_GAME.DINO_SIZE.width,
       height: RUNNER_GAME.DINO_SIZE.height,
       velocityY: 0,
@@ -33,14 +33,14 @@ export const useGameLoop = () => {
   });
 
   const gameLoopRef = useRef<NodeJS.Timeout | null>(null);
-  const lastObstacleDistanceRef = useRef<number>(1000);
+  const lastObstacleDistanceRef = useRef<number>(0); // Start at 0 for proper initial delay
 
   // Initialize game
   const initializeGame = useCallback(() => {
     setGameState({
       dinosaur: {
         x: 50,
-        y: RUNNER_GAME.GROUND_HEIGHT,
+        y: RUNNER_GAME.GROUND_HEIGHT + 50, // Position on top of ground
         width: RUNNER_GAME.DINO_SIZE.width,
         height: RUNNER_GAME.DINO_SIZE.height,
         velocityY: 0,
@@ -55,7 +55,7 @@ export const useGameLoop = () => {
       isGameOver: false,
       isPaused: false,
     });
-    lastObstacleDistanceRef.current = 1000;
+    lastObstacleDistanceRef.current = 0; // Reset to 0 for proper initial delay
   }, [gameState.highScore]);
 
   // Jump action

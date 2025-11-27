@@ -109,6 +109,12 @@ export const useMemoryGame = (difficulty: Difficulty = 'medium') => {
 
         setTimeout(() => {
           setGameState((prev) => {
+            // Re-find cards in current state to ensure we have latest data
+            const currentFirstCard = prev.cards.find((c) => c.id === firstCardId);
+            const currentSecondCard = prev.cards.find((c) => c.id === secondCardId);
+
+            if (!currentFirstCard || !currentSecondCard) return prev;
+
             let newCards = prev.cards;
             let newMatchedPairs = prev.matchedPairs;
 
@@ -116,7 +122,7 @@ export const useMemoryGame = (difficulty: Difficulty = 'medium') => {
               // Mark cards as matched
               newCards = prev.cards.map((c) =>
                 c.id === firstCardId || c.id === secondCardId
-                  ? { ...c, isMatched: true }
+                  ? { ...c, isMatched: true, isFlipped: true }
                   : c
               );
               newMatchedPairs = prev.matchedPairs + 1;
@@ -144,7 +150,7 @@ export const useMemoryGame = (difficulty: Difficulty = 'medium') => {
         }, MEMORY_GAME.FLIP_DELAY);
       }
     }
-  }, [gameState.flippedCards]);
+  }, [gameState.flippedCards, gameState.cards]);
 
   // Timer
   useEffect(() => {
