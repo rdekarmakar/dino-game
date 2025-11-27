@@ -1,11 +1,13 @@
-# Kids Games Collection - Project Documentation
+# Dino Adventure - Kids Dinosaur Games Collection
 
 ## Project Overview
 
-A collection of three educational and entertaining games designed for children, featuring:
+A **dinosaur-themed** collection of three educational and entertaining games designed for children, featuring:
 1. **Dinosaur Runner Game** - An endless runner where kids control a dinosaur avoiding obstacles
-2. **Memory Matching Game** - A card-matching game to improve memory and concentration
-3. **Quiz Game** - An interactive educational quiz with multiple topics
+2. **Dino Memory Match** - Match pairs of different dinosaur species to improve memory and concentration
+3. **Dino Quiz Game** - An interactive educational quiz all about dinosaurs, their facts, and prehistoric times
+
+**Theme:** All games feature colorful, kid-friendly dinosaurs with a cohesive prehistoric world aesthetic
 
 **Target Platforms:** iOS, Android, and Web
 
@@ -63,6 +65,7 @@ dino-game/
 │   │   │   ├── hooks/
 │   │   │   │   └── useMemoryGame.ts
 │   │   │   ├── data/
+│   │   │   │   ├── dinosaurs.ts
 │   │   │   │   └── cardImages.ts
 │   │   │   └── MemoryMatch.tsx
 │   │   │
@@ -73,7 +76,8 @@ dino-game/
 │   │       │   ├── ProgressBar.tsx
 │   │       │   └── ResultScreen.tsx
 │   │       ├── data/
-│   │       │   ├── questions.ts
+│   │       │   ├── dinoQuestions.ts
+│   │       │   ├── dinoFacts.ts
 │   │       │   └── categories.ts
 │   │       ├── hooks/
 │   │       │   └── useQuiz.ts
@@ -165,22 +169,29 @@ dino-game/
 - Score system with multipliers
 - Responsive controls (touch for mobile, keyboard for web)
 
-### 2. Memory Matching Game
+### 2. Dino Memory Match
 
 **Game Mechanics:**
-- Grid of face-down cards (4x4, 4x5, or 6x6 based on difficulty)
-- Flip two cards at a time to find matches
+- Grid of face-down cards featuring different dinosaur species (4x4, 4x5, or 6x6 based on difficulty)
+- Flip two cards at a time to find matching dinosaur pairs
 - Cards stay revealed if they match
 - Track number of moves and time
-- Win when all pairs are found
+- Win when all dinosaur pairs are found
+
+**Dinosaur Theme:**
+- Cards feature cute, colorful dinosaurs: T-Rex, Triceratops, Stegosaurus, Brachiosaurus, Pterodactyl, Velociraptor, Ankylosaurus, Parasaurolophus, Diplodocus, Spinosaurus, etc.
+- Prehistoric background with palm trees, volcanoes, and rocks
+- Dinosaur-themed card backs (dinosaur egg or footprint pattern)
+- Dinosaur names displayed when matched (educational aspect)
 
 **Features:**
 - Multiple difficulty levels (Easy: 4x3, Medium: 4x4, Hard: 6x6)
-- Themed card sets (animals, dinosaurs, shapes, numbers)
+- Different dinosaur card sets (Herbivores, Carnivores, Flying/Marine, Mixed)
 - Star rating based on performance
-- Sound effects (card flip, match, no match)
-- Celebration animation on win
+- Sound effects (card flip, dinosaur roar on match, gentle sound on no match)
+- Celebration animation with confetti and dinosaurs on win
 - Best time and moves tracking
+- Learn mode: Shows dinosaur name and fun fact when matched
 
 **Technical Implementation:**
 - Grid layout using FlatList or Grid
@@ -188,33 +199,47 @@ dino-game/
 - Game state management (flipped cards, matched pairs)
 - Timer using `setInterval`
 - Random card shuffling algorithm
+- Dinosaur data structure with images, names, and facts
 
-### 3. Quiz Game
+### 3. Dino Quiz Game
 
 **Game Mechanics:**
-- Multiple-choice questions (4 options)
-- Various categories (Animals, Colors, Numbers, Shapes, etc.)
-- Progressive difficulty
+- Multiple-choice questions about dinosaurs (4 options with images)
+- Various dinosaur categories
+- Progressive difficulty (beginner to expert)
 - Timed responses (optional)
-- Visual feedback (correct/incorrect)
+- Visual feedback with animated dinosaurs (correct/incorrect)
+
+**Dinosaur Theme & Question Categories:**
+1. **Dinosaur Types** - "Which dinosaur had three horns?" (Triceratops)
+2. **Dinosaur Diets** - "Was T-Rex a herbivore or carnivore?"
+3. **Dinosaur Sizes** - "Which was the biggest dinosaur?"
+4. **Dinosaur Features** - "Which dinosaur had plates on its back?" (Stegosaurus)
+5. **Dinosaur Sounds** - Match the roar to the dinosaur (audio-visual)
+6. **Prehistoric Times** - "When did dinosaurs live?"
+7. **Dinosaur Babies** - "How were baby dinosaurs born?" (eggs)
+8. **Fun Facts** - "How many teeth did T-Rex have?"
 
 **Features:**
-- Multiple quiz categories
+- Multiple quiz categories (all dinosaur-related)
 - Age-appropriate questions (3-8 years old)
-- Progress tracking
-- Encouraging messages and rewards
-- Sound effects (correct answer, wrong answer)
-- Fun animations for correct answers
+- Colorful dinosaur illustrations with each question
+- Progress tracking with dinosaur footprints
+- Encouraging messages and rewards ("Dino-mite!", "Roar-some!", "You're a paleontologist!")
+- Sound effects (dinosaur roar for correct, gentle sound for wrong)
+- Fun animations (dinosaur celebrates on correct answer)
 - Score and accuracy tracking
-- Achievement system (badges/stickers)
+- Achievement system (dinosaur badges/stickers: "T-Rex Expert", "Triceratops Master")
+- Educational tidbits after each answer
 
 **Technical Implementation:**
-- Question bank with categories
+- Question bank with dinosaur categories and images
 - Randomized question order
 - Answer validation
-- Score calculation
-- Progress indicators
-- Result summary screen
+- Score calculation with dinosaur-themed scoring (eggs collected)
+- Progress indicators (dinosaur walking across screen)
+- Result summary screen with dinosaur celebration
+- Image preloading for smooth experience
 
 ## UI/UX Design Guidelines
 
@@ -224,12 +249,13 @@ dino-game/
 - High contrast colors
 - Intuitive navigation
 - Minimal text, more visuals
-- Encouraging messages ("Great job!", "Try again!", "Almost!")
+- Encouraging dinosaur-themed messages ("Dino-mite!", "Roar-some!", "T-Riffic!")
 
-**Color Palette:**
-- Primary: Bright, cheerful colors (blues, greens, yellows)
-- Secondary: Soft pastels for backgrounds
-- Accent: Bold colors for CTAs
+**Dinosaur-Themed Color Palette:**
+- Primary: Prehistoric greens (#4CAF50, #8BC34A) and earthy browns (#795548, #A1887F)
+- Secondary: Sky blues (#03A9F4) and sunset oranges (#FF9800) for backgrounds
+- Accent: Bold dinosaur colors - vibrant reds (#F44336), purples (#9C27B0), and yellows (#FFEB3B)
+- Neutral: Stone grays (#9E9E9E) and sand beige (#FFF8E1)
 - Ensure accessibility (WCAG AA compliance)
 
 **Animations:**
@@ -261,24 +287,28 @@ dino-game/
 - [ ] Add settings screen (sound, difficulty)
 - [ ] Create app icon and splash screen
 
-### Phase 3: Memory Matching Game (Week 2)
-- [ ] Design card components
-- [ ] Implement game board layout
+### Phase 3: Dino Memory Match (Week 2)
+- [ ] Design dinosaur card components with illustrations
+- [ ] Create dinosaur data (names, images, facts)
+- [ ] Implement game board layout with prehistoric background
 - [ ] Add card flip animation
 - [ ] Implement matching logic
-- [ ] Add timer and move counter
-- [ ] Create win/loss conditions
-- [ ] Add sound effects
+- [ ] Add timer and move counter with dinosaur theme
+- [ ] Create win/loss conditions with celebration
+- [ ] Add dinosaur sound effects (roars, footsteps)
 - [ ] Implement high score system
+- [ ] Add educational dinosaur facts on match
 
-### Phase 4: Quiz Game (Week 3)
-- [ ] Create question bank with categories
-- [ ] Design question and answer UI
+### Phase 4: Dino Quiz Game (Week 3)
+- [ ] Create dinosaur question bank with categories
+- [ ] Design dinosaur-themed question and answer UI
+- [ ] Collect/create dinosaur images for questions
 - [ ] Implement quiz logic
-- [ ] Add progress indicator
-- [ ] Create result screen
-- [ ] Add sound effects and animations
-- [ ] Implement score tracking
+- [ ] Add dinosaur progress indicator (footprints)
+- [ ] Create result screen with dinosaur celebration
+- [ ] Add dinosaur sound effects and animations
+- [ ] Implement score tracking (eggs collected)
+- [ ] Add educational facts after each answer
 
 ### Phase 5: Dinosaur Runner (Week 4-5)
 - [ ] Design game characters and obstacles
@@ -366,14 +396,16 @@ dino-game/
 ## Future Enhancements
 
 **Version 2.0:**
-- More games (puzzle, coloring, music)
-- Multiplayer modes
+- More dinosaur games (dino puzzle, dino coloring book, dino music maker)
+- Dinosaur collection mode (unlock new dinosaurs)
+- Multiplayer modes (race against friends)
 - Parental dashboard
-- Progress reports
-- Customizable avatars
-- Rewards and achievements
+- Progress reports with dinosaur achievements
+- Customizable dinosaur avatars
+- Dinosaur sticker rewards and achievements
 - Cloud save sync
 - Localization (multiple languages)
+- Dinosaur encyclopedia/fact book
 
 **Advanced Features:**
 - AI-driven difficulty adjustment
@@ -385,7 +417,9 @@ dino-game/
 
 **Images:**
 - Free resources: Kenney.nl, OpenGameArt, Itch.io
-- Custom illustrations (consider commissioning)
+- Dinosaur illustrations: Freepik, VectorStock (with license)
+- Custom dinosaur illustrations (consider commissioning for cohesive style)
+- Consider cute/cartoon style rather than realistic for kid-friendliness
 
 **Sounds:**
 - Freesound.org
