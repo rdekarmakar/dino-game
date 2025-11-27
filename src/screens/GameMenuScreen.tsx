@@ -35,8 +35,7 @@ const GameMenuScreen: React.FC<GameMenuScreenProps> = ({ navigation }) => {
       emoji: '🦖',
       color: colors.accent.red,
       onPress: () => {
-        // navigation.navigate('DinosaurRunner');
-        alert('Dinosaur Runner coming soon!');
+        navigation.navigate('DinosaurRunner');
       },
     },
     {
@@ -46,8 +45,7 @@ const GameMenuScreen: React.FC<GameMenuScreenProps> = ({ navigation }) => {
       emoji: '🦕',
       color: colors.primary.green,
       onPress: () => {
-        // navigation.navigate('MemoryMatch', { difficulty: 'medium' });
-        alert('Memory Match coming soon!');
+        navigation.navigate('MemoryMatch', { difficulty: 'medium' });
       },
     },
     {
@@ -57,8 +55,7 @@ const GameMenuScreen: React.FC<GameMenuScreenProps> = ({ navigation }) => {
       emoji: '🧠',
       color: colors.secondary.orange,
       onPress: () => {
-        // navigation.navigate('Quiz');
-        alert('Dino Quiz coming soon!');
+        navigation.navigate('Quiz');
       },
     },
   ];
