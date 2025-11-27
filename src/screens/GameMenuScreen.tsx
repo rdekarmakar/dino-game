@@ -55,7 +55,7 @@ const GameMenuScreen: React.FC<GameMenuScreenProps> = ({ navigation }) => {
       emoji: '🧠',
       color: colors.secondary.orange,
       onPress: () => {
-        navigation.navigate('Quiz');
+        navigation.navigate('Quiz', {});
       },
     },
   ];

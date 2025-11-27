@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   dinoType: {
     fontSize: 8,
     fontWeight: '600',
-    color: colors.secondary.lightGreen,
+    color: colors.primary.lightGreen,
     textAlign: 'center',
     marginTop: 2,
     textTransform: 'uppercase',
